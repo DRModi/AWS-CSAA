@@ -1,0 +1,361 @@
+						"Jay Shree Ganeshay Namh:"
+							"Jay Mataji"
+
+
+AWS - Amazon Web Service - Concepts and High Level Introduction.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	AWS : Amazon Web Services is a Cloud Service Provider, AKA - Infrastructure as a Service (IaaS).
+	- Storage, Computing Power, Databases, Networking, Analytics, Developer Tools, Virtualization, Security.
+
+	Major Terminology/Reason/Advantages:
+	####################################
+	 - High Availibility
+	 - Fault Tolerance
+	 - Scalability (automatically grow Dynamically)
+	 - Elasticity (automatically srink Dtynamically)
+
+	 - Instance (Server)
+
+	Services:
+	########
+
+		VPCs: Virtual Private Cloud
+		*****************************
+		It is your private section of AWS, where you can place AWS Resources, and allow/restrict access to them.
+
+
+		EC2 (compute power): Elastic Cloud Compute
+		*******************************************
+		It is a virtual instance;/sever/computer that you can use for whatever you like.
+			ex: common use, web host
+			
+		
+		EC2- Part#2:
+		************
+		It is good for any type of "processing" activity. 
+			ex: in netflix - video stream encoding and transacoding happens on the EC2 instance (stream loaded from S3)
+
+		Amazon RDS:
+		***********
+		It is AWS provisioned database service. Comonly used for things like storing customer account information and cataloging inventory.
+
+
+		AWS S3:
+		*******
+		It is massive/long-term storage bucket
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	AWS - Essentials:
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+IAM: Identity & Access Management
+**********************************
+	It is where you manage your AWS users and their access to AWS account and services.
+
+	Common use:
+		Users
+		Group
+		IAM Access policies
+		Roles
+	
+	The user created when you created the AWS account is called the "root" user.
+	
+	By default, root user has FULL administrative rights and access to every part of AWS
+	
+	By default, any newly created user will have no access to any AWS service (except ability to login). permission must be given to grant the access.
+	
+	
+	Best Practice: Security Status should be green for all configurations.
+	***********************************************************************
+	
+		Activate MFA: Multi Factor Authentication - Same as RSA Token (available virtual and hard fob)
+		***************************************************************************************
+		
+		Create individual IAM users:
+		*****************************
+			- As per best practice, we should be not using the root user in day to day job, including administrator
+			
+		User groups to assign permission:
+		*********************************
+			- Create custom group (we have admin)
+		
+
+VPC - Virtual Private Clouds
+****************************
+
+
+	Global Infrastructure:
+	*********************
+	AWS Regions:
+		Availibility Zones - Physical Data Centers (Multiple availibility zone - multiple backup - Redundency - HA Fault Tolerance)
+		
+	
+	VPC Basics: when you create account with AWS by default VPC have been created, and includes following standard component:
+	************************************************************************************************************************
+	(1) Internet Gateway - VPC can have only one IGW, Once active AWS resource would be there then IGW can't be detached.
+			- it is horizontally scaled, redundent and highly available VPC component
+			- Allow communication between instances in your VPC and the internet
+			
+		Rules/Details for Interner Gateway:
+			- Only 1 IGW can be attached to a VPC at a time
+			- IGW can not be detached from VPC while there are active AWS resources in the VPC (such as EC2 instansaces, RDS databases, etc..)
+			
+	(2) A Route Table (with predefined routes to the default subnets)
+			- It contains set of rules, called routes, that are used to determine where network traffic is directed.
+			- Defulat VPC already has a 'main' route table.
+		
+		
+		Rules/Details for Route Tables:
+			- Unlike an IGW, you can have multiple route tables in a VPC
+			- You can not delete a route table if it has dependencies (associate subnets)
+		
+	(3) A network access control list (NACL) (with predefined rules for access)
+			- it is an optional layer of security for VPC that act as firewall for controlling traffic in and out of one or more subnets.
+			
+			- Defulat VPC already has a NACL in place and associated with the default subnets.
+			
+			
+		Rules/Details for NACL:
+			- Rules are evaluated lowest to highest based on rule number.
+			- The first rule found that applies to the traffic type immediatly applied, regardless of any highest number of rule come after
+			- Default NACL allows all the traffic to the default subnets
+			- Any newly created NACL, deny all traffic by default
+			- A subnet can be only associated with ONE NACL at a time.
+			
+	(4) Subnet to provision AWS resources in (such as EC2 instances)
+			- it is like subnetworks, is sub-section of the network.
+	
+	
+		Rules/Details for subnets:
+			- it must be associated with Route table
+			- Public subnet has route to the internet
+			- Private subnet does not have a route to the internet
+			- A subnet is located in specific availibility zone.
+			
+			
+
+Simple Storage Service (S3)
+***************************
+	- An online, bulk storage service that you can access from almost any device
+	
+	- It has simple webservice interface that you can use to store and retrive any amount of data, at any time, from anywhere on the web.
+	it gives any user access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that amazon uses to run 
+	its own globle network of websites. the service aim to maximize benefits of scale and to pass those benefis to users.
+	
+	- Default 5 GB of storage free 
+	
+
+	(1) S3 Storage Classes: 
+		These classes are defined based on object/file availability ( and the durability (corrupt/lost)
+		
+		Standard: Default Storage Options
+			- General all purpose storage
+			- 99.999999999999% Object durability ("eleven nines")
+			- 99.99% Object availability
+			- Most expensive
+			
+		Reduce Redundancy Storage (RSS) - Backup
+			- Designed for non-critical, reproducible objects
+			- 99.99% object durability
+			- 99.99% object availability
+			- less expensive than Standard
+			
+		
+		Infrequent Access (S3-IA) - Not accessed day to day base - May be weekly or monthly
+			- Designed for objects that you do not access frequently but must be immediately available when accessed
+			- 99.999999999999% Object durability ("eleven nines")
+			- 99.90% Object livability
+			- less expensive than Standard/RSS
+			
+		Glacier
+			- Designed for long-term archival storage
+			- May take several hours for objects stored in Glacier to be retrieved
+			- 99.999999999999% Object durability ("eleven nines")
+			- cheapest S3 Storage (very low cost)
+	
+		
+	(2) Object Lifecycle:
+		
+		- It is located on the bucket level
+		
+		- However, it can be applied to 
+			- The entire bucket (applied all the objects in the Bucket)
+			- One specific folder within a bucket (applied all the objects in that folder)
+			- one specified object within a bucket
+		
+		- you can always delete lifecycle policy or manually change the storage class back to whatever you like
+	
+	(3) Permissions:
+		
+		- It can be found on  bucket or object level
+		
+		- On bucket level you can control
+			List: who can see the backet name
+			Upload/Delete: Objects to (upload) or in the bucket (delete)
+			View Permission
+			Edit Permission
+			
+			Bucket level permission are generally used for "internal" access control
+			
+		- On the object level, you can control (for each object individually)
+			Open/download
+			View permissions
+			Edit Permissions
+			
+			You can share specific objects via a link with the anyone in the world.
+			
+			
+	
+	(4) Object Versioning
+		
+		- S3 Versioning is a feature that keeps track of and stores all old/new versions of an object so that you can access and use an older version you like
+		
+		- Versioning is either ON or OFF
+		- Once it is turned ON, you can only "suspend" versioning. It can not be fully turned OFF.
+		- Suspending versioning only prevents versioning going forward. All previous object with versions will still maintain their older versions.
+		- Versioning can only be set on the bucket level and applies to ALL objects in the bucket
+
+
+		
+
+		
+Elastic Compute Cloud (EC2)
+***************************
+	
+	- Think of EC2 as your basic computer (which has OS, cpu, hard drive, network card, firewall, ram)
+		
+	- EC2 provides scalable computing capacity in AWS Cloud
+	- It can be used to launch as many or as few virtual servers as you need, configure security and networking, and manage storage
+	
+	(1) AMI's - Amazon Machine Images
+		- A preconfigured package required to launch an EC2 instance
+			includes OS, software packages and other required settings.
+		
+		- you specify an AMI when you launch an instance, and you can launch as many instances from the AMI as you need.
+			you can also launch instances from as many different AMIs as you need.
+			
+	
+	(2) Instance Types:
+		- it is the CPU/Core
+		- Each instance offers different compute, memory and storage capabilities
+		
+	(3) Elastic Block Store (EBS)
+		- Storage volume for an EC2 instance (like hard drive)
+				
+		- IOPS - input/output operations per second - More IOPS means better volume performance
+		
+	(4) Security Groups
+		- are similar to NACLs in that they allow/deny traffic.
+		- security groups are found on the instance level (as opposed to subnet level)
+		
+		- Virtual firewall that controls the traffic for one or more instances
+		- when you launch instances, you associate one or more security groups with the instance
+		
+	
+	(5) IP Addressing:
+		- Private IP addressing for EC2 instance
+			- By default all EC2 instances created with private IP address, 
+			- It allow for instances to communicate with each other as long as they are located in the same VPC
+		
+		Public IP addressing for EC2 instance
+		- Instances can be launched with or without a public IP Address (by default) depending on VPC/Subnet settings.
+		- Public IP Address REQUIRED for the instance to communicate with the internet.
+
+
+		
+RDS and DynamoDB
+******************
+
+RDS - Relational SQL databases (Amazon Aurora, SQL Server, ORACLE, PostgreSQL, MySQL)
+DynamoDB - Non-Relational, No-SQL Database (DynamoDB only available, we can install/download the mongoDB, Cassandra, Oracle noSQL
+
+
+Simple Notification Service (SNS): In other word it is alert service
+***********************************
+
+AWS service that allows you to automate the sending of email or text message notification based on events that happens in your AWS account
+	Topic - Like EC2 crashed
+	Subscriber - Person/Group who gets the notification
+	Publisher - Cloudwatch/human/alarm
+		
+	
+AWS CloudWatch: in Other word it is monitoring service..
+****************
+
+It is service that allows you to monitor various elements of your AWS account.
+
+This alerts will be distribution using SNS service...
+
+	example... 
+		- setup the alerts for the mothly billing exceeding certain amounts.
+		- setup the alerts for the EC2 instance CPU utilizations..
+	
+	
+	
+Elastic Load Balancer (ELB) (Classic) : 
+*************************************
+An ELB evenly distributes traffic between EC2 instances that are associated with it.
+
+
+
+AutoScalling:
+**************
+- Auto Scalling is the process of adding (scalling up) OR removing (scalling down) EC2 instances based on traffic demand for you application.
+
+- Handle the load for your application and Auto Scalling Groups
+
+- It is a service and not the physical part of the infrastructure
+
+
+Lambda - Serverless Computing
+******************************
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	AWS - Cloud Computing
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	
+AWS Cloud Platform Devided into following categories:
+
+	- Compute and Networking (ex: virtual server and vpc)
+		EC2 - RHEL, CentOS, Ubuntu, Debian, Fedora, Amazon Linux, Oracle Linux, Microsoft Windows Server
+		Route53 - DNS system which we configure on AWS
+		VPC - Virtual Private Cloud
+	- Storage and CDN (ex: various storage services, also content which leaves in network)
+		Amazon S3 (store your images, contents and even static websites)
+		Amazon Glacier (Archival system - economical compare to S3)
+		Amazon CloudFront		
+	- Databases 
+		Amazon RDS:
+			- MySQL
+			- MS SQL Server
+			- Oracle
+	- Application Services (notification services, emial services.. etc)
+		- Amazon SES (mass emailing as e-advertisement)
+		- Amazon SNS (Monitoring email).
+	- Deployment and Management (CI-CD)
+		- Amazon CloudWatch (monitoring service for resources such as servers, storage, even billings, DNS, RDS Database)
+		- Amazone IAM (Manage Users and Groups using Identity and Access management)
+	
+	
+	
+	
+
